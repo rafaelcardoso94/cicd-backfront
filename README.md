@@ -1,7 +1,7 @@
 # cicd-back-front
 
 Criar credencial no GCP - Service Account(GCP_SA_KEY)
-Permissoes [Cloud Run Admin, Storage Admin e Cloud Build Editor, Service Account User].
+Permissoes [Cloud Run Admin, Storage Admin e Cloud Build Editor, Service Account User, Viewer].
 
 Criar key desse Service Account(GCP_SA_KEY).
 
