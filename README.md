@@ -8,4 +8,5 @@ Criar key desse Service Account(GCP_SA_KEY).
 Habilitar libs no GCP;
 - Artifact Registry API;
 - Cloud Run Admin API;
+- Cloud Build API;
 
