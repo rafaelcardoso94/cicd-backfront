@@ -2,9 +2,9 @@ name: CICD - Backend
 on:
   push: 
     branches: ["main"]
-    # paths: ["backend/**"]
+    paths: ["backend/**"]
   workflow_dispatch:
-  
+
 env:
   PROJECT_ID: lab-develop-466614
   SERVICE_NAME: backend

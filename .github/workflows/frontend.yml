@@ -4,7 +4,7 @@ on:
     branches: ["main"]
     # paths: ["frontend/**"]
   workflow_dispatch:
-  
+
 env:
   PROJECT_ID: lab-develop-466614
   SERVICE_NAME: frontend
@@ -19,21 +19,39 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v3
 
-      - name: Autenticar no Google Cloud
-        uses: google-github-actions/auth@v2
+      - uses: google-github-actions/setup-gcloud@v0.2.0
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
-
-      - name: Configurar o SDK do gcloud
-        uses: google-github-actions/setup-gcloud@v2
-        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
           project_id: ${{ env.PROJECT_ID }}
-          install_components: "beta"
 
-      - name: Build e Push da imagem para o Artifact Registry
-        run: |
-          gcloud builds submit backend \
-            --tag gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:latest
+      # gcloud configure docker
+      - name: Configure Docker
+        run: gcloud auth configure-docker --quiet
+
+      # build image
+      - name: Build Docker image
+        run: docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:latest .
+
+      # push image to registry
+      - name: Push Docker image
+        run: docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:latest
+        
+      # - name: Autenticar no Google Cloud
+      #   uses: google-github-actions/auth@v2
+      #   with:
+      #     credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      # - name: Configurar o SDK do gcloud
+      #   uses: google-github-actions/setup-gcloud@v2
+      #   with:
+      #     project_id: ${{ env.PROJECT_ID }}
+      #     install_components: "beta"
+
+      # - name: Build e Push da imagem para o Artifact Registry
+      #   run: |
+      #     gcloud builds submit backend \
+      #       --tag gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:latest
+
 
   deploy:
     runs-on: ubuntu-latest
