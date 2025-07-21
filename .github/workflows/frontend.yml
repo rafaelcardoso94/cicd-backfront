@@ -3,7 +3,8 @@ on:
   push: 
     branches: ["main"]
     # paths: ["frontend/**"]
-
+  workflow_dispatch:
+  
 env:
   PROJECT_ID: lab-develop-466614
   SERVICE_NAME: frontend
