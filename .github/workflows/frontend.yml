@@ -2,7 +2,7 @@ name: CICD - Frontend
 on:
   push: 
     branches: ["main"]
-    paths: ["frontend/**"]
+    # paths: ["frontend/**"]
 
 env:
   PROJECT_ID: lab-develop-466614
