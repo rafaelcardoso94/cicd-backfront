@@ -63,4 +63,5 @@ jobs:
             --min-instances 0 \
             --max-instances 1 \
             --platform managed \
-            --allow-unauthenticated 
+            --allow-unauthenticated \
+            --port 80
