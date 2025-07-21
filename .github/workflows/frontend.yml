@@ -2,7 +2,7 @@ name: CICD - Frontend
 on:
   push: 
     branches: ["main"]
-    # paths: ["frontend/**"]
+    paths: ["frontend/**"]
   workflow_dispatch:
 
 env:
@@ -38,6 +38,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: deploy
+    needs: build
 
     steps:
       - name: Checkout do código
