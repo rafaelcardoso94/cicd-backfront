@@ -1,4 +1,4 @@
-name: CICD - Backend
+name: CI/CD - Backend
 on:
   push: 
     branches: ["main"]
@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Autenticar no Google Cloud
         uses: google-github-actions/auth@v2
@@ -32,7 +32,8 @@ jobs:
       - name: Build e Push da imagem para o Artifact Registry
         run: |
           gcloud builds submit backend \
-            --tag gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:latest
+            --tag gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:latest \
+            --tag gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -41,7 +42,7 @@ jobs:
 
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Autenticar no Google Cloud
         uses: google-github-actions/auth@v2
@@ -52,8 +53,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v2
         with:
           project_id: ${{ env.PROJECT_ID }}
-          install_components: "beta"
-          
+
       - name: Deploy no Cloud Run
         run: |
           gcloud run deploy ${{ env.SERVICE_NAME }} \
