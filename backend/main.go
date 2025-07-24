@@ -1,15 +1,22 @@
 package main
 
 import (
+    "encoding/json"
     "fmt"
     "log"
     "net/http"
+    "os"
     "sync"
 )
+
+type Config struct {
+    Mensagem string `json:"mensagem"`
+}
 
 var (
     contador int
     mutex    sync.Mutex
+    config   Config
 )
 
 func enableCors(w http.ResponseWriter) {
@@ -31,10 +38,27 @@ func contadorHandler(w http.ResponseWriter, r *http.Request) {
     numeroAtual := contador
     mutex.Unlock()
 
-    fmt.Fprintf(w, "%d", numeroAtual)
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(map[string]interface{}{
+        "mensagem": config.Mensagem,
+        "contador": numeroAtual,
+    })
+}
+
+func carregarConfig(path string) error {
+    data, err := os.ReadFile(path)
+    if err != nil {
+        return err
+    }
+
+    return json.Unmarshal(data, &config)
 }
 
 func main() {
+    if err := carregarConfig("config.yaml"); err != nil {
+        log.Fatalf("Erro ao carregar config: %v", err)
+    }
+
     http.HandleFunc("/contador", contadorHandler)
 
     fmt.Println("Servidor rodando em http://localhost:8080")

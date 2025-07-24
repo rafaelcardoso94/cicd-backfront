@@ -29,6 +29,10 @@ jobs:
         with:
           project_id: ${{ env.PROJECT_ID }}
 
+      - name: Baixar config.yaml do Secret Manager
+        run: |
+          gcloud secrets versions access latest --secret="poc-config" > backend/config.yaml
+
       - name: Build e Push da imagem para o Artifact Registry
         run: |
           gcloud builds submit backend \

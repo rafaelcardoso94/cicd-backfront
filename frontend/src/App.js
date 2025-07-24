@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 function App() {
-  const [numero, setNumero] = useState(null);
+  const [contador, setContador] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -10,11 +10,13 @@ function App() {
     setError(null);
 
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/contador`);
-      // const response = await fetch("http://localhost:8080/contador");
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/contador`
+      );
       if (!response.ok) throw new Error("Erro na requisição");
+
       const texto = await response.text();
-      setNumero(texto);
+      setContador(texto);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -23,13 +25,50 @@ function App() {
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "2rem" }}>
+    <div
+      style={{
+        textAlign: "center",
+        marginTop: "2rem",
+        fontFamily: "Arial, sans-serif",
+      }}
+    >
       <h1>Contador</h1>
-      <button onClick={buscarNumero} disabled={loading}>
+      <button
+        onClick={buscarNumero}
+        disabled={loading}
+        style={{
+          padding: "0.6rem 1.2rem",
+          fontSize: "1rem",
+          cursor: loading ? "not-allowed" : "pointer",
+        }}
+      >
         {loading ? "Carregando..." : "Buscar Número"}
       </button>
-      {numero && <p style={{ marginTop: "1rem", fontSize: "1.5rem" }}>{numero}</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      {contador && (
+        <p
+          style={{
+            marginTop: "1.5rem",
+            fontSize: "1.5rem",
+            color: "#333",
+            whiteSpace: "pre-line",
+          }}
+        >
+          {contador}
+        </p>
+      )}
+
+      {error && (
+        <p
+          style={{
+            marginTop: "1.5rem",
+            color: "red",
+            fontWeight: "bold",
+          }}
+        >
+          {error}
+        </p>
+      )}
     </div>
   );
 }
