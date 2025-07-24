@@ -10,8 +10,8 @@ RUN npm install
 COPY ./src ./src
 COPY ./public ./public
 
-ARG REACT_APP_BACKEND_URL
-ENV REACT_APP_BACKEND_URL=$REACT_APP_BACKEND_URL
+# ARG REACT_APP_BACKEND_URL
+ENV REACT_APP_BACKEND_URL=https://backend-115775342048.us-central1.run.app
 
 RUN npm run build
 
