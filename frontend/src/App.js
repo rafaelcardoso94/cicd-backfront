@@ -15,8 +15,8 @@ function App() {
       );
       if (!response.ok) throw new Error("Erro na requisição");
 
-      const texto = await response.text();
-      setContador(texto);
+      const json = await response.json();
+      setContador(`${json.mensagem}\nContador: ${json.contador}`);
     } catch (err) {
       setError(err.message);
     } finally {

@@ -1,3 +1,1 @@
-{
-  "mensagem": "Olá mundo do config.yaml dentro do cloud run!"
-}
+mensagem: "Olá mundo do config.yaml dentro do cloud run!"

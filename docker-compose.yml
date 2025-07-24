@@ -6,8 +6,6 @@ services:
       context: ./backend
     ports:
       - "8080:8080"
-    volumes:
-      - ./backend:/app
     command: go run main.go
   frontend:
     build:
