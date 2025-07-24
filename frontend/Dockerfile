@@ -4,14 +4,10 @@ FROM node:18-alpine as build
 WORKDIR /app
 
 COPY package.json package-lock.json* ./
-
 RUN npm install
 
 COPY ./src ./src
 COPY ./public ./public
-
-# ARG REACT_APP_BACKEND_URL
-ENV REACT_APP_BACKEND_URL=https://backend-115775342048.us-central1.run.app
 
 RUN npm run build
 
@@ -20,6 +16,13 @@ FROM nginx:stable-alpine
 
 COPY --from=build /app/build /usr/share/nginx/html
 
-EXPOSE 80
+# Copia entrypoint customizado
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
+ENV REACT_APP_BACKEND_URL="https://backend-115775342048.us-central1.run.app"
+
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]
+
+EXPOSE 80
